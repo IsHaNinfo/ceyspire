@@ -79,7 +79,7 @@ export default function HomePage() {
       alt: "Sri Lankan Sun-Dried Sprats.",
     },
   ];
- const reviews: Review[] = [
+ const Reviews= [
     {
       id: 1,
       name: "Nimali Perera",
@@ -221,7 +221,7 @@ export default function HomePage() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {reviews.map((review: Review) => (
+              {Reviews.map((review) => (
                 <div 
                   key={review.id}
                   className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col justify-between hover:shadow-xl transition"
