@@ -12,8 +12,8 @@ import {
     Minus,
     X,
 } from "lucide-react";
-import Header from "../components/ui/Header";
-import Footer from "../components/ui/Footer";
+import Header from "../components/ui/Header"; // Assuming this path is correct
+import Footer from "../components/ui/Footer"; // Assuming this path is correct
 
 export default function CategoryPage() {
     // --- State Definitions ---
@@ -26,10 +26,10 @@ export default function CategoryPage() {
 
     // --- Type Definitions ---
     const lkrToNumber = (price_lkr: string): number => {
+        // Extracts the numeric part from a string like "Rs:450"
         const match = price_lkr.match(/(\d+\.?\d*)/);
         return match ? Number(match[0]) : 0;
     };
-
 
 
     // --- Type Definitions ---
@@ -215,7 +215,8 @@ export default function CategoryPage() {
         };
 
         return (
-            <div className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
+            // INCREASED Z-INDEX to z-[1000] for reliability
+            <div className="fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
                 <div
                     className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transform transition-all duration-300"
                     onClick={(e) => e.stopPropagation()}
@@ -310,7 +311,7 @@ export default function CategoryPage() {
                                 </button>
                                 <button
 
-                                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-3 text-lg font-bold text-white hover:bg-emerald-700 transition shadow-lg shadow-emerald-200"
+                                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-emerald-600 py-3 text-lg font-bold text-emerald-600 hover:bg-emerald-50 transition"
                                 >
                                     Contact For More Details
                                 </button>
@@ -335,7 +336,7 @@ export default function CategoryPage() {
                                 key={category}
                                 onClick={() => handleCategorySwitch(category)}
                                 className={`text-lg font-semibold px-4 py-2 rounded-lg transition-all whitespace-nowrap 
-                  ${activeCategory === category
+                    ${activeCategory === category
                                         ? "bg-emerald-600 text-white shadow-md"
                                         : "text-gray-600 hover:bg-gray-100"
                                     }`}
@@ -358,9 +359,13 @@ export default function CategoryPage() {
                                     style={{ backgroundImage: `url("${product.image}")` }}
                                 ></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                                <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 bg-black/40 backdrop-blur-sm transition-transform duration-300">
+                                
+                                {/* *** FIX: The 'More Details' button is now always visible at the bottom of the card on mobile. *** Removed: translate-y-full and group-hover:translate-y-0 which hid the button on touch devices.
+                                */}
+                                <div className="absolute bottom-0 left-0 w-full p-4 bg-black/40 backdrop-blur-sm transition-transform duration-300">
                                     <h3 className="text-white text-lg font-bold">{product.name}</h3>
                                     <button
+                                        // The onClick handler that opens the modal
                                         onClick={() => handleMoreDetails(product)}
                                         className="mt-3 w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 transition"
                                     >
