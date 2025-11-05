@@ -216,22 +216,26 @@ export default function CategoryPage() {
 
         return (
             // INCREASED Z-INDEX to z-[1000] for reliability
-            <div className="fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
+           <div className="fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose}>
                 <div
-                    className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden transform transition-all duration-300"
+                    // Max-width adjusted for small screens: max-w-xl (576px) on mobile, then max-w-3xl (768px) on md screens and up.
+                    className="bg-white rounded-xl shadow-2xl w-full max-w-l md:max-w-xl overflow-hidden transform transition-all duration-300"
                     onClick={(e) => e.stopPropagation()}
                 >
 
+                    {/* Header: Use smaller padding on mobile (p-3 or p-4) */}
                     <div className="flex justify-between items-center p-4 border-b border-gray-100">
-                        <h3 className="text-2xl font-bold text-emerald-700">{product.name}</h3>
+                        <h3 className="text-xl md:text-2xl font-bold text-emerald-700">{product.name}</h3>
                         <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-900 rounded-full hover:bg-gray-100 transition">
-                            <X size={24} />
+                            <X size={20} />
                         </button>
                     </div>
 
-                    <div className="p-6 md:flex md:gap-6">
+                    {/* Content Area: Use smaller padding on mobile (p-4) */}
+                    <div className="p-4 md:p-6 md:flex md:gap-6 overflow-y-auto max-h-[80vh]">
+                        
                         {/* Product Image */}
-                        <div className="md:w-1/2 mb-4 md:mb-0">
+                        <div className="md:w-1/2 mb-3 md:mb-0">
                             <div
                                 className="aspect-[3/4] bg-cover bg-center rounded-xl shadow-md"
                                 style={{ backgroundImage: `url("${product.image}")` }}
@@ -243,21 +247,21 @@ export default function CategoryPage() {
                         <div className="md:w-1/2 flex flex-col justify-between">
                             <div>
                                 {/* Details */}
-                                <p className="text-gray-600 mb-4">{product.details}</p>
+                                <p className="text-sm md:text-base text-gray-600 mb-3">{product.details}</p>
 
                                 {/* Weight Selection */}
-                                <div className="mb-4">
-                                    <span className="text-lg font-medium text-gray-700 block mb-2">Select Weight:</span>
+                                <div className="mb-3">
+                                    <span className="text-base font-medium text-gray-700 block mb-1">Select Weight:</span>
                                     <div className="flex flex-wrap gap-2">
                                         {product.pricing.map((tier, index) => (
                                             <button
                                                 key={tier.weight_grams}
                                                 onClick={() => { setSelectedTierIndex(index); setQuantity(1); }}
-                                                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all border 
-                                ${selectedTierIndex === index
-                                                        ? 'bg-emerald-600 text-white border-emerald-600'
-                                                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                                                    }`}
+                                                className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all border 
+                                                ${selectedTierIndex === index
+                                                    ? 'bg-emerald-600 text-white border-emerald-600'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                                }`}
                                             >
                                                 {tier.weight_grams}g
                                             </button>
@@ -266,57 +270,56 @@ export default function CategoryPage() {
                                 </div>
 
                                 {/* Unit Price (Dynamic based on selected tier) */}
-                                <div className="mb-6">
-                                    <span className="text-xl font-semibold text-gray-900">Price for {selectedTier.weight_grams}g: </span>
+                                <div className="mb-4">
+                                    <span className="text-lg font-semibold text-gray-900">Price for {selectedTier.weight_grams}g: </span>
                                     <span className="text-xl font-bold text-emerald-700">{selectedTier.price_lkr}</span>
                                 </div>
 
                                 {/* Quantity Control (Number of packages) */}
-                                <div className="flex items-center gap-4 mb-6">
-                                    <span className="text-lg font-medium text-gray-700">Quantity (Packs):</span>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="text-base font-medium text-gray-700">Quantity (Packs):</span>
                                     <div className="flex items-center border border-gray-300 rounded-full overflow-hidden">
                                         <button
                                             onClick={() => handleQuantityChange(-1)}
                                             disabled={quantity <= 1}
-                                            className="p-2 h-10 w-10 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                                            className="p-1 h-8 w-8 text-gray-700 hover:bg-gray-100 disabled:opacity-50"
                                         >
-                                            <Minus size={16} />
+                                            <Minus size={14} />
                                         </button>
-                                        <span className="px-4 text-lg font-medium w-12 text-center">{quantity}</span>
+                                        <span className="px-3 text-base font-medium w-10 text-center">{quantity}</span>
                                         <button
                                             onClick={() => handleQuantityChange(1)}
-                                            className="p-2 h-10 w-10 text-gray-700 hover:bg-gray-100"
+                                            className="p-1 h-8 w-8 text-gray-700 hover:bg-gray-100"
                                         >
-                                            <Plus size={16} />
+                                            <Plus size={14} />
                                         </button>
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Total Price and Action (Displaying in LKR) */}
-                            <div className="pt-4 border-t border-gray-100 gap-4 flex flex-col">
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="text-2xl font-semibold text-gray-900">Total Price:</span>
-                                    <span className="text-3xl font-extrabold text-emerald-700">Rs {totalPriceLKR}</span>
-                                </div>
-
-                                <button
-                                    onClick={() => {
-                                        console.log(`Added ${quantity}x ${selectedTier.weight_grams}g pack of ${product.name}. Total: Rs ${totalPriceLKR}`);
-                                        onClose();
-                                    }}
-                                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-3 text-lg font-bold text-white hover:bg-emerald-700 transition shadow-lg shadow-emerald-200"
-                                >
-                                    Add {quantity} Packs to Cart <ShoppingCart size={20} />
-                                </button>
-                                <button
-
-                                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-emerald-600 py-3 text-lg font-bold text-emerald-600 hover:bg-emerald-50 transition"
-                                >
-                                    Contact For More Details
-                                </button>
-                            </div>
                         </div>
+                    </div>
+                    
+                    {/* Action Area: Smaller padding/margins on mobile */}
+                    <div className="px-4 pb-4 pt-2 md:p-6 md:pt-4 border-t border-gray-100 gap-3 flex flex-col">
+                        <div className="flex justify-between items-center mb-3">
+                            <span className="text-xl font-semibold text-gray-900">Total Price:</span>
+                            <span className="text-2xl font-extrabold text-emerald-700">Rs {totalPriceLKR}</span>
+                        </div>
+
+                        <button
+                            onClick={() => {
+                                console.log(`Added ${quantity}x ${selectedTier.weight_grams}g pack of ${product.name}. Total: Rs ${totalPriceLKR}`);
+                                onClose();
+                            }}
+                            className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600 py-2.5 text-base font-bold text-white hover:bg-emerald-700 transition shadow-lg shadow-emerald-200"
+                        >
+                            Add {quantity} Packs to Cart <ShoppingCart size={18} />
+                        </button>
+                        <button
+                            className="w-full flex items-center justify-center gap-2 rounded-lg border border-emerald-600 py-2.5 text-base font-bold text-emerald-600 hover:bg-emerald-50 transition"
+                        >
+                            Contact For More Details
+                        </button>
                     </div>
                 </div>
             </div>
@@ -359,7 +362,7 @@ export default function CategoryPage() {
                                     style={{ backgroundImage: `url("${product.image}")` }}
                                 ></div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                                
+
                                 {/* *** FIX: The 'More Details' button is now always visible at the bottom of the card on mobile. *** Removed: translate-y-full and group-hover:translate-y-0 which hid the button on touch devices.
                                 */}
                                 <div className="absolute bottom-0 left-0 w-full p-4 bg-black/40 backdrop-blur-sm transition-transform duration-300">
