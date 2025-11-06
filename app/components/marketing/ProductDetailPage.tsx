@@ -4,9 +4,9 @@
 
 import React, { useState, useMemo } from "react";
 import { ShoppingCart, X, Plus, Minus, ChevronDown, ChevronLeft } from "lucide-react";
-import Header from "../ui/Header"; // Assuming path
-import Footer from "../ui/Footer"; // Assuming path
-
+import Header from "../ui/Header";
+import Footer from "../ui/Footer";
+import Link from "next/link";
 // --- Type Definitions (Must be consistent with CategoryPage) ---
 interface PriceTier {
     weight_grams: number;
@@ -52,7 +52,7 @@ const ProductDetailPage: React.FC<ProductPageProps> = ({ product, onBack }) => {
             <Header />
 
             <main className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
-                
+
                 {/* Back Button and Product Title */}
                 <div className="mb-8">
                     <button
@@ -90,9 +90,9 @@ const ProductDetailPage: React.FC<ProductPageProps> = ({ product, onBack }) => {
                                         onClick={() => { setSelectedTierIndex(index); setQuantity(1); }}
                                         className={`px-4 py-2 rounded-xl text-base font-semibold transition-all border 
                                         ${selectedTierIndex === index
-                                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-md'
-                                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                                        }`}
+                                                ? 'bg-emerald-600 text-white border-emerald-600 shadow-md'
+                                                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                            }`}
                                     >
                                         {tier.weight_grams}g ({tier.price_lkr})
                                     </button>
@@ -143,11 +143,12 @@ const ProductDetailPage: React.FC<ProductPageProps> = ({ product, onBack }) => {
                             >
                                 Add {quantity} Packs to Cart <ShoppingCart size={20} />
                             </button>
-                            <button
+                            <Link
+                                href="/about"
                                 className="w-full flex items-center justify-center gap-3 rounded-xl border border-emerald-600 py-3 text-lg font-bold text-emerald-600 hover:bg-emerald-50 transition"
                             >
                                 Contact For Wholesale Details
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
